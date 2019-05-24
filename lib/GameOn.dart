@@ -6,7 +6,8 @@ class GameOn extends StatefulWidget {
   final String dropDownValue;
 
   @override
-  _GameOnState createState() => new _GameOnState(this.litems, this.dropDownValue);
+  _GameOnState createState() =>
+      new _GameOnState(this.litems, this.dropDownValue);
 
   GameOn(this.litems, this.dropDownValue);
 }
@@ -24,6 +25,11 @@ class _GameOnState extends State<GameOn> {
   var actualIndex = 0;
   var actualRound = "1";
   var actualRest = "220";
+  int _selectedIndex = 0;
+
+  _onSelected(int index) {
+    setState(() => _selectedIndex = index);
+  }
 
   Widget _button(String number, Function() f) {
     // Creating a method of return type Widget with number and function f as a parameter
@@ -33,7 +39,7 @@ class _GameOnState extends State<GameOn> {
       child: Text(number,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0)),
       textColor: Colors.white,
-      color: Colors.blue,
+      color: Colors.blueAccent,
       onPressed: f,
     );
   }
@@ -42,7 +48,11 @@ class _GameOnState extends State<GameOn> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('Game On'),
+        title: new Text('Game On', style: TextStyle(fontSize: 25)),
+        centerTitle: true,
+        actions: <Widget>[
+
+        ],
         backgroundColor: Colors.blue,
       ),
       body: new Builder(builder: (BuildContext context) {
@@ -50,25 +60,27 @@ class _GameOnState extends State<GameOn> {
         actualPlayer = litems[actualIndex].name;
 
         return new Container(
-            color: Colors.black38,
+            color: Colors.white,
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                    Row(children: <Widget>[
-                  SizedBox(
+                Row(children: <Widget>[
+                  Container(
                       height: 75,
-                      width: MediaQuery.of(context).size.width / 2,
+                      width: MediaQuery.of(context).size.width/2,
                       child: DecoratedBox(
-                        decoration: const BoxDecoration(color: Colors.black54),
+                        decoration: BoxDecoration(
+                            color: Colors.black54,
+                            borderRadius: BorderRadius.circular(8.0)),
                         child: Center(
                             child: Text(
                           "$actualPlayer",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 30,
+                              fontSize: 40,
                               fontWeight: FontWeight.bold),
                         )),
                       )),
@@ -76,7 +88,8 @@ class _GameOnState extends State<GameOn> {
                       height: 75,
                       width: MediaQuery.of(context).size.width / 2,
                       child: DecoratedBox(
-                        decoration: const BoxDecoration(color: Colors.black54),
+                        decoration: BoxDecoration(color: Colors.black54,
+                            borderRadius: BorderRadius.circular(8.0)),
                         child: Center(
                             child: Text(
                           "Runde: $actualRound",
@@ -88,76 +101,89 @@ class _GameOnState extends State<GameOn> {
                         )),
                       )),
                 ]),
-                Row(
-                  children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height - 80 - 85 - (MediaQuery.of(context).size.height / 10) * 5 ,
-                            width: MediaQuery.of(context).size.width / 2,
-                            child: DecoratedBox(
-                              decoration:
-                                  const BoxDecoration(color: Colors.black54),
-                              child: Center(
-                                  child: Text(
-                                "$showedString",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 70,
-                                    fontWeight: FontWeight.bold),
-                              )),
+                Row(children: <Widget>[
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height -
+                              80 -
+                              85 -
+                              (MediaQuery.of(context).size.height / 10) * 5,
+                          width: MediaQuery.of(context).size.width / 2,
+                          child: DecoratedBox(
+                            decoration:
+                                const BoxDecoration(color: Colors.black54),
+                            child: Center(
+                                child: Text(
+                              "$showedString",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 70,
+                                  fontWeight: FontWeight.bold),
                             )),
-                        SizedBox(
-                            height: 70,
-                            width: MediaQuery.of(context).size.width / 2,
-                            child: DecoratedBox(
-                              decoration:
-                                  const BoxDecoration(color: Colors.black54),
-                              child: Center(
-                                  child: Text(
-                                "Rest: $actualRest",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 30),
-                              )),
+                          )),
+                      SizedBox(
+                          height: 70,
+                          width: MediaQuery.of(context).size.width / 2,
+                          child: DecoratedBox(
+                            decoration:
+                                const BoxDecoration(color: Colors.black54),
+                            child: Center(
+                                child: Text(
+                              "Rest: $actualRest",
+                              textAlign: TextAlign.center,
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 30),
                             )),
-                      ],
-                    ),
-                    SizedBox(
-                        height: MediaQuery.of(context).size.height - 90 - (MediaQuery.of(context).size.height / 10) * 5,
-                        width: MediaQuery.of(context).size.width / 2,
-                        child: new ListView.builder(
-                            itemCount: litems.length,
-                            itemBuilder: (BuildContext ctxt, int Index) {
-                              return SizedBox(
-                                  height: 60,
-                                  child: Card(
-                                      elevation: 2,
-                                      color: Colors.black38,
-                                      child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Text("  " + litems[Index].name,
-                                                style: new TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                            Text(litems[Index].points + "   ",
-                                                style: new TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                          ])));
-                            })),
-
-                ],
-                ),
+                          )),
+                    ],
+                  ),
+                  SizedBox(
+                      height: MediaQuery.of(context).size.height -
+                          90 -
+                          (MediaQuery.of(context).size.height / 10) * 5,
+                      width: MediaQuery.of(context).size.width / 2,
+                      child: new ListView.builder(
+                          itemCount: litems.length,
+                          itemBuilder: (BuildContext ctxt, int Index) {
+                            return Card(
+                              elevation: 2,
+                              color: _selectedIndex != null &&
+                                      _selectedIndex == Index
+                                  ? Colors.green
+                                  : Colors.blue,
+                              child: ListTile(
+                                title: Text(
+                                  litems[Index].name,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                trailing: Text(
+                                  litems[Index].points,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                onTap: () {
+                                  setState(() {
+                                    _onSelected(Index);
+                                    changePlayer(litems[Index].name);
+                                  });
+                                },
+                                onLongPress: () {
+                                  //                            <-- onLongPress
+                                  setState(() {});
+                                },
+                              ),
+                            );
+                          })),
+                ]),
                 Container(
                     child: Column(
                   children: <Widget>[
@@ -415,27 +441,34 @@ class _GameOnState extends State<GameOn> {
       litems[actualIndex].points = (oldPoints + newPoints).toString();
     });
 
-    if(int.parse(litems[actualIndex].points) >= int.parse(dropDownValue)){
+    if (int.parse(litems[actualIndex].points) >= int.parse(dropDownValue)) {
       showDialog(
           context: context,
           child: new AlertDialog(
-            title: new Text("Spieler "+actualPlayer+" hat verloren !"),
+            title: new Text("Spieler " + actualPlayer + " hat verloren !"),
             actions: <Widget>[
-              new FlatButton(onPressed: () => Navigator.pop(context), child: new Text('Ok'))
+              new FlatButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: new Text('Ok'))
             ],
-          )
-          );
+          ));
     }
 
-    actualPlayer = litems[actualIndex].name;
     actualRest = (int.parse(actualRest) - newPoints).toString();
-    if (actualIndex == litems.length - 1) {
+    if (int.parse(actualRest) <= 0) {
       actualRound = (int.parse(actualRound) + 1).toString();
-      actualIndex = 0;
       actualRest = "220";
-    } else {
-      actualIndex += 1;
     }
     showedString = "0";
+  }
+
+  changePlayer(String name) {
+    actualPlayer = name;
+    for (int i = 0; i < litems.length; i++) {
+      if (actualPlayer == litems[i].name) {
+        actualIndex = i;
+        return;
+      }
+    }
   }
 }
